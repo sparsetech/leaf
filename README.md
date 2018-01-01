@@ -1,7 +1,7 @@
 # Leaf
 [![Build Status](https://travis-ci.org/sparsetech/leaf.svg)](https://travis-ci.org/sparsetech/leaf)
 [![Join the chat at https://gitter.im/sparsetech/leaf](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sparsetech/leaf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Maven Central](https://img.shields.io/maven-central/v/tech.sparse/leaf_2.12.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22tech.sparse%22%20AND%20a%3A%22leaf_2.12%22)
+[![Maven Central](https://img.shields.io/maven-central/v/tech.sparse/leaf-core_2.12.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22tech.sparse%22%20AND%20a%3A%22leaf-core_2.12%22)
 
 Leaf is a lightweight Scala library which provides functionality to instantiate, manipulate and convert document ASTs. As an example, you could instantiate an AST from a Markdown document, load and embed code listings from a file, derive a table of contents and then compile an HTML document.
 
@@ -23,7 +23,7 @@ Leaf is a lightweight Scala library which provides functionality to instantiate,
 Add the following dependencies to your build configuration:
 
 ```sbt
-libraryDependencies += "tech.sparse" %% "leaf" % "0.1.0"
+libraryDependencies += "tech.sparse" %% "leaf-core" % "0.1.0"
 
 // If you would like to create notebooks, include:
 libraryDependencies += "tech.sparse" %% "leaf-notebook" % "0.1.0"
@@ -190,7 +190,7 @@ class CustomWriter(editSourceUrl: String) extends Writer {
 Instead of writing your own traversal function, you can re-use Leaf's Writer and only override those nodes you would like to render differently.
 
 ## Links
-* [ScalaDoc](https://www.javadoc.io/doc/tech.sparse/leaf_2.12/)
+* [ScalaDoc](https://www.javadoc.io/doc/tech.sparse/leaf-core_2.12/)
 
 ## Credits
 The [Flexmark](https://github.com/vsch/flexmark-java) library is used for parsing Markdown.
