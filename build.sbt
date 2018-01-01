@@ -16,8 +16,34 @@ lazy val commonSettings = Seq(
     "io.circe" %% "circe-core"    % Circe,
     "io.circe" %% "circe-generic" % Circe,
     "io.circe" %% "circe-parser"  % Circe
-  )
+  ),
+
+  pomExtra :=
+    <url>https://github.com/sparsetech/leaf</url>
+    <licenses>
+      <license>
+        <name>Apache-2.0</name>
+        <url>https://www.apache.org/licenses/LICENSE-2.0.html</url>
+      </license>
+    </licenses>
+    <scm>
+      <url>git@github.com:sparsetech/leaf.git</url>
+    </scm>
+    <developers>
+      <developer>
+        <id>tindzk</id>
+        <name>Tim Nieradzik</name>
+        <url>http://github.com/tindzk</url>
+      </developer>
+    </developers>
 )
+
+lazy val root = project.in(file("."))
+  .aggregate(core, notebook)
+  .settings(
+    commonSettings,
+    skip in publish := true
+  )
 
 lazy val core = project
   .in(file("core"))
