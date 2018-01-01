@@ -23,10 +23,10 @@ Leaf is a lightweight Scala library which provides functionality to instantiate,
 Add the following dependencies to your build configuration:
 
 ```sbt
-libraryDependencies += "tech.sparse" %% "leaf" % "0.1.0-SNAPSHOT"
+libraryDependencies += "tech.sparse" %% "leaf" % "0.1.0"
 
 // If you would like to create notebooks, include:
-libraryDependencies += "tech.sparse" %% "leaf-notebook" % "0.1.0-SNAPSHOT"
+libraryDependencies += "tech.sparse" %% "leaf-notebook" % "0.1.0"
 ```
 
 ## Example
