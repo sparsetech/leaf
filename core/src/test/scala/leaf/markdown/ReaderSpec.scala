@@ -104,6 +104,7 @@ class ReaderSpec extends FunSuite {
   test("Map multiple supported tags (2)") {
     assert(Reader.parse(s"""  <listing result="test"/>\n  <listing result="test2"/>""") == List(
       Node(NodeType.Listing(result = Some("test")),  List.empty),
+      Node(NodeType.Text("\n  "), List.empty),
       Node(NodeType.Listing(result = Some("test2")), List.empty)))
   }
 
@@ -289,5 +290,19 @@ class ReaderSpec extends FunSuite {
           Node(NodeType.Text("B")),
           Node(NodeType.Text("\n")),
           Node(NodeType.Text("C"))))))))
+  }
+
+  test("HTML") {
+    assert(Reader.parse("<p><i>hello</i> world</p>") == List(
+      Node(NodeType.Html("p", Map.empty), List(
+        Node(NodeType.Html("i", Map.empty), List(
+          Node(NodeType.Text("hello")))),
+        Node(NodeType.Text(" world"))))))
+  }
+
+  test("HTML with entity") {
+    assert(Reader.parse("<p>&auml;</p>") == List(
+      Node(NodeType.Html("p", Map.empty), List(
+        Node(NodeType.Text("ä"))))))
   }
 }

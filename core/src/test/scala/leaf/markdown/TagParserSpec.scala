@@ -47,6 +47,9 @@ class TagParserSpec extends FunSuite {
     assert(parse("""<tag   key="val&quot;ue">""") == Success(List(
       NodeType.OpenTag("tag", Map("key" -> "val\"ue")))))
 
+    assert(parse("""<tag   key="val&gt;ue">""") == Success(List(
+      NodeType.OpenTag("tag", Map("key" -> "val>ue")))))
+
     assert(parse("""<tag   key="val ue">""") == Success(List(
       NodeType.OpenTag("tag", Map("key" -> "val ue")))))
 
@@ -66,7 +69,7 @@ class TagParserSpec extends FunSuite {
         "key2" -> "value2")))))
   }
 
-  test("Do not parse non-HTML input") {
-    assert(parse("test").isFailure)
+  test("Parse text nodes") {
+    assert(parse("test") == Success(List(NodeType.Text("test"))))
   }
 }

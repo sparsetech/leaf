@@ -15,7 +15,7 @@ object NodeType {
   case object Subsection    extends ChildLevel
   case object Subsubsection extends ChildLevel
 
-  case class Text(text: String) extends NodeType
+  case class Text(text: String) extends NodeType with Tag
   case class Id  (id  : String) extends NodeType
 
   case object Bold    extends NodeType
