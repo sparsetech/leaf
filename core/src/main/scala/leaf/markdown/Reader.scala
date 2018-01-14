@@ -177,13 +177,13 @@ class Reader(treeBase: NodeType.TreeBase) {
         case x :: xs =>
           x.tpe match {
             case NodeType.OpenTag(t, a) =>
-              val (children , remainder) = f(xs, Some(t))
-              val (children2, _        ) = f(remainder, tag)
+              val (children , remainder ) = f(xs, Some(t))
+              val (children2, remainder2) = f(remainder, tag)
 
               val nt = TagSet.resolveTag(t, a)
                 .getOrElse(NodeType.Html(t, a))
 
-              (List(Node(nt, children)) ++ children2, List.empty)
+              (List(Node(nt, children)) ++ children2, remainder2)
 
             case NodeType.CloseTag(t) if !tag.contains(t) =>
               throw new Exception(s"Closing wrong tag ($tag expected, $t given)")

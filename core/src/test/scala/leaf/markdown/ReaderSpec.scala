@@ -319,4 +319,25 @@ class ReaderSpec extends FunSuite {
     assert(Reader.parse(html2) == List(
       Node(NodeType.Listing(code = Some("<ul></ul>")))))
   }
+
+  test("Parse nested HTML with subsequent paragraph") {
+    val html =
+      """
+        |<p><strong>First</strong></p>
+        |
+        |Second
+      """.stripMargin
+
+    assert(Reader.parse(html) == List(
+      Node(NodeType.Html("p", Map.empty), List(
+        Node(NodeType.Html("strong", Map.empty), List(
+          Node(NodeType.Text("First"))
+        ))
+      )),
+      Node(NodeType.Text("\n")),
+      Node(NodeType.Paragraph, List(
+        Node(NodeType.Text("Second"))
+      ))
+    ))
+  }
 }
