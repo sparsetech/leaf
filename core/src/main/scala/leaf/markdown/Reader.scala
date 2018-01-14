@@ -18,6 +18,11 @@ class Reader(treeBase: NodeType.TreeBase) {
   def visit(node: ast.Text): List[Node[_]] =
     List(Node(NodeType.Text(node.getChars.toString)))
 
+  def visit(node: ast.IndentedCodeBlock): List[Node[_]] =
+    List(Node(
+      NodeType.Listing(
+        code = Some(TextHelpers.reindent(node.getChars.toString)))))
+
   def visit(node: ast.FencedCodeBlock): List[Node[_]] =
     List(Node(
       NodeType.Listing(
@@ -136,6 +141,7 @@ class Reader(treeBase: NodeType.TreeBase) {
       case n: ast.Heading => visit(n)
       case n: ast.BlockQuote => visit(n)
       case n: ast.SoftLineBreak => visit(n)
+      case n: ast.IndentedCodeBlock => visit(n)
       case n: ast.FencedCodeBlock => visit(n)
       case n: TableBlock => visit(n)
       case n: TableHead => visit(n)

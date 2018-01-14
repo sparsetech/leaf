@@ -309,4 +309,14 @@ class ReaderSpec extends FunSuite {
   test("HTML comments") {
     assert(Reader.parse("<!--Hello-->") == List.empty)
   }
+
+  test("Indented code blocks") {
+    val html = "\t<ul></ul>"
+    assert(Reader.parse(html) == List(
+      Node(NodeType.Listing(code = Some("<ul></ul>")))))
+
+    val html2 = "\t <ul></ul>"
+    assert(Reader.parse(html2) == List(
+      Node(NodeType.Listing(code = Some("<ul></ul>")))))
+  }
 }
