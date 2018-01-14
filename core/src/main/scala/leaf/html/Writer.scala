@@ -67,7 +67,7 @@ trait Writer {
   }
 
   val code = { code: LNode[NodeType.Code.type] =>
-    List(html"""<span class="code">${children(code)}</span>""")
+    List(html"<code>${children(code)}</code>")
   }
 
   val subsubsection = { subsubsection: LNode[NodeType.Subsubsection.type] =>
