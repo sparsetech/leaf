@@ -305,4 +305,8 @@ class ReaderSpec extends FunSuite {
       Node(NodeType.Html("p", Map.empty), List(
         Node(NodeType.Text("ä"))))))
   }
+
+  test("HTML comments") {
+    assert(Reader.parse("<!--Hello-->") == List.empty)
+  }
 }

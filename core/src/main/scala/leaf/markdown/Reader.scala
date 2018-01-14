@@ -87,6 +87,9 @@ class Reader(treeBase: NodeType.TreeBase) {
     tags.map(Node(_, List.empty))
   }
 
+  // Ignore HTML comments for now
+  def visit(node: ast.HtmlCommentBlock): List[Node[_]] = List.empty
+
   def visit(node: ast.Image): List[Node[_]] =
     List(Node(NodeType.Image(node.getUrl.toString)))
 
@@ -144,6 +147,7 @@ class Reader(treeBase: NodeType.TreeBase) {
       case n: FootnoteBlock => visit(n)
       case n: ast.HtmlBlock => visit(n)
       case n: ast.HtmlInline => visit(n)
+      case n: ast.HtmlCommentBlock => visit(n)
     }
 
   def mergeFootnodeBlockItems(nodes: List[Node[_]]): List[Node[_]] = {
