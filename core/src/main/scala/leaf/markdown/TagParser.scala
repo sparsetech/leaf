@@ -1,7 +1,7 @@
 package leaf.markdown
 
 import leaf.NodeType._
-import fastparse.all._
+import scala.meta.internal.fastparse.all._
 
 /** Parser for HTML tags such as: <tag name="value" name2="value2"> */
 object TagParser {

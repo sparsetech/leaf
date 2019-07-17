@@ -1,9 +1,9 @@
-val Pine       = "0.1.1"
-val Circe      = "0.8.0"
-val FlexMark   = "0.28.24"
-val FastParse  = "1.0.0"
-val ScalaTest  = "3.0.4"
-val SourceCode = "0.1.4"
+val Pine       = "0.1.5"
+val Circe      = "0.11.1"
+val FlexMark   = "0.50.18"
+val FastParse  = "1.0.1"
+val ScalaTest  = "3.0.8"
+val SourceCode = "0.1.7"
 
 name := "leaf"
 
@@ -53,7 +53,7 @@ lazy val core = project
     name := "leaf-core",
     libraryDependencies ++= Seq(
       "tech.sparse"            %% "pine"                   % Pine,
-      "com.lihaoyi"            %% "fastparse"              % FastParse,
+      "org.scalameta"          %% "fastparse"              % FastParse,
       "com.vladsch.flexmark"   %  "flexmark"               % FlexMark,
       "com.vladsch.flexmark"   %  "flexmark-ext-tables"    % FlexMark,
       "com.vladsch.flexmark"   %  "flexmark-ext-footnotes" % FlexMark,

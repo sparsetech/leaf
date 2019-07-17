@@ -1,6 +1,6 @@
 package leaf.markdown
 
-import fastparse.core.Parsed
+import scala.meta.internal.fastparse.core.Parsed
 import leaf.NodeType
 
 import scala.util.{Failure, Success, Try}

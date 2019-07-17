@@ -1,14 +1,12 @@
 package leaf.markdown
 
-import java.util
-
 import scala.collection.JavaConverters._
 import com.vladsch.flexmark.ast
+import com.vladsch.flexmark.util
 import com.vladsch.flexmark.ext.footnotes.{Footnote, FootnoteBlock, FootnoteExtension}
 import com.vladsch.flexmark.ext.tables._
 import com.vladsch.flexmark.parser.Parser
-import com.vladsch.flexmark.util.options.MutableDataSet
-
+import com.vladsch.flexmark.util.data.MutableDataSet
 import leaf._
 import leaf.notebook.TextHelpers
 
@@ -124,7 +122,7 @@ class Reader(treeBase: NodeType.TreeBase) {
   def visit(node: ast.SoftLineBreak): List[Node[_]] =
     List(Node(NodeType.Text("\n")))
 
-  def dispatch(node: ast.Node): List[Node[_]] =
+  def dispatch(node: util.ast.Node): List[Node[_]] =
     node match {
       case n: ast.Paragraph => visit(n)
       case n: ast.Emphasis => visit(n)
@@ -201,7 +199,7 @@ class Reader(treeBase: NodeType.TreeBase) {
     children
   }
 
-  def children(node: ast.Node): List[Node[_]] =
+  def children(node: util.ast.Node): List[Node[_]] =
     convertTags(
       mergeFootnodeBlockItems(
         node.getChildren.asScala.toList
@@ -211,7 +209,7 @@ class Reader(treeBase: NodeType.TreeBase) {
     )
 
   /** TODO Flexmark packs simple list items and footnote blocks in paragraphs */
-  def paragraphChildren(node: ast.Node): List[Node[_]] =
+  def paragraphChildren(node: util.ast.Node): List[Node[_]] =
     node.getChildren.asScala.toList match {
       case (c: ast.Paragraph) :: Nil => children(c)
       case _ => children(node)
@@ -219,7 +217,7 @@ class Reader(treeBase: NodeType.TreeBase) {
 
   def parse(input: String): List[Node[NodeType]] = {
     val options  = new MutableDataSet()
-      .set(Parser.EXTENSIONS, util.Arrays.asList(
+      .set(Parser.EXTENSIONS, java.util.Arrays.asList(
         TablesExtension.create, FootnoteExtension.create))
     val parser   = Parser.builder(options).build
     val document = parser.parse(input)
