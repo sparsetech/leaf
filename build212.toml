@@ -7,6 +7,7 @@ testFrameworks    = ["org.scalatest.tools.Framework"]
 [module.leaf]
 root      = "."
 targets   = ["jvm"]
+sources   = ["shared/src/"]
 scalaDeps = [
   ["io.circe", "circe-core"   , "0.11.1"],
   ["io.circe", "circe-generic", "0.11.1"],
@@ -22,9 +23,9 @@ scalaDeps  = [
   ["org.scalameta", "fastparse", "1.0.1"]
 ]
 javaDeps = [
-  ["com.vladsch.flexmark", "flexmark"              , "0.50.18"],
-  ["com.vladsch.flexmark", "flexmark-ext-tables"   , "0.50.18"],
-  ["com.vladsch.flexmark", "flexmark-ext-footnotes", "0.50.18"]
+  ["com.vladsch.flexmark", "flexmark"              , "0.50.32"],
+  ["com.vladsch.flexmark", "flexmark-ext-tables"   , "0.50.32"],
+  ["com.vladsch.flexmark", "flexmark-ext-footnotes", "0.50.32"]
 ]
 
 [module.leaf-core.test.jvm]
