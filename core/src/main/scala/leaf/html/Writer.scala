@@ -53,6 +53,11 @@ trait Writer {
     List(html"<caption>${children(caption)}</caption>")
   }
 
+  val anchor = { anchor: LNode[NodeType.Anchor] =>
+    val id = anchor.tpe.id
+    List(html"<a name=$id>${children(anchor)}</a>")
+  }
+
   val jump = { jump: LNode[NodeType.Jump] =>
     val href = "#" + jump.tpe.target
     List(html"<a href=$href>${children(jump)}</a>")
@@ -185,6 +190,7 @@ trait Writer {
     case NodeType.TableRow => tableRow(node.asInstanceOf[LNode[NodeType.TableRow.type]])
     case NodeType.TableCell => tableCell(node.asInstanceOf[LNode[NodeType.TableCell.type]])
     case NodeType.TableCaption => tableCaption(node.asInstanceOf[LNode[NodeType.TableCaption.type]])
+    case _: NodeType.Anchor => anchor(node.asInstanceOf[LNode[NodeType.Anchor]])
     case _: NodeType.Jump => jump(node.asInstanceOf[LNode[NodeType.Jump]])
     case NodeType.HardLineBreak => hardLineBreak(node.asInstanceOf[LNode[NodeType.HardLineBreak.type]])
     case NodeType.Subscript => subscript(node.asInstanceOf[LNode[NodeType.Subscript.type]])
