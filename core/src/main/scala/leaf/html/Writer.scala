@@ -58,6 +58,22 @@ trait Writer {
     List(html"<a href=$href>${children(jump)}</a>")
   }
 
+  val hardLineBreak = { _: LNode[NodeType.HardLineBreak.type] =>
+    List(tag.Br)
+  }
+
+  val subscript = { subscript: LNode[NodeType.Subscript.type] =>
+    List(html"""<sub>${children(subscript)}</sub>""")
+  }
+
+  val superscript = { superscript: LNode[NodeType.Superscript.type] =>
+    List(html"""<sup>${children(superscript)}</sup>""")
+  }
+
+  val smallCaps = { smallCaps: LNode[NodeType.SmallCaps.type] =>
+    List(html"""<span style="font-variant:small-caps">${children(smallCaps)}</span>""")
+  }
+
   val bold = { bold: LNode[NodeType.Bold.type] =>
     List(html"<b>${children(bold)}</b>")
   }
@@ -94,8 +110,8 @@ trait Writer {
     List(html"<ul>${children(list)}</ul>")
   }
 
-  val orderedList = { list: LNode[NodeType.OrderedList.type] =>
-    List(html"<ol>${children(list)}</ol>")
+  val orderedList = { list: LNode[NodeType.OrderedList] =>
+    List(html"<ol start=${list.tpe.start.toString}>${children(list)}</ol>")
   }
 
   val listing = { listing: LNode[NodeType.Listing] =>
@@ -170,6 +186,10 @@ trait Writer {
     case NodeType.TableCell => tableCell(node.asInstanceOf[LNode[NodeType.TableCell.type]])
     case NodeType.TableCaption => tableCaption(node.asInstanceOf[LNode[NodeType.TableCaption.type]])
     case _: NodeType.Jump => jump(node.asInstanceOf[LNode[NodeType.Jump]])
+    case NodeType.HardLineBreak => hardLineBreak(node.asInstanceOf[LNode[NodeType.HardLineBreak.type]])
+    case NodeType.Subscript => subscript(node.asInstanceOf[LNode[NodeType.Subscript.type]])
+    case NodeType.Superscript => superscript(node.asInstanceOf[LNode[NodeType.Superscript.type]])
+    case NodeType.SmallCaps => smallCaps(node.asInstanceOf[LNode[NodeType.SmallCaps.type]])
     case NodeType.Bold => bold(node.asInstanceOf[LNode[NodeType.Bold.type]])
     case NodeType.Italic => italic(node.asInstanceOf[LNode[NodeType.Italic.type]])
     case NodeType.Code => code(node.asInstanceOf[LNode[NodeType.Code.type]])
@@ -179,7 +199,7 @@ trait Writer {
     case NodeType.Chapter => chapter(node.asInstanceOf[LNode[NodeType.Chapter.type]])
     case NodeType.ListItem => listItem(node.asInstanceOf[LNode[NodeType.ListItem.type]])
     case NodeType.BulletList => bulletList(node.asInstanceOf[LNode[NodeType.BulletList.type]])
-    case NodeType.OrderedList => orderedList(node.asInstanceOf[LNode[NodeType.OrderedList.type]])
+    case _: NodeType.OrderedList => orderedList(node.asInstanceOf[LNode[NodeType.OrderedList]])
     case _: NodeType.Listing => listing(node.asInstanceOf[LNode[NodeType.Listing]])
     case NodeType.Todo => todo(node.asInstanceOf[LNode[NodeType.Todo.type]])
     case _: NodeType.Url => url(node.asInstanceOf[LNode[NodeType.Url]])

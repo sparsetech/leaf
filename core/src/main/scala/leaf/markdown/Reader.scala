@@ -7,8 +7,10 @@ import com.vladsch.flexmark.ext.footnotes.{Footnote, FootnoteBlock, FootnoteExte
 import com.vladsch.flexmark.ext.tables._
 import com.vladsch.flexmark.parser.Parser
 import com.vladsch.flexmark.util.data.MutableDataSet
+import com.vladsch.flexmark.util.sequence.BasedSequence
 import leaf._
 import leaf.notebook.TextHelpers
+import leaf.util.TextUtil
 
 object Reader extends Reader(NodeType.Chapter)
 
@@ -64,10 +66,14 @@ class Reader(treeBase: NodeType.TreeBase) {
 
   def visit(node: ast.LinkRef): List[Node[_]] = {
     val anchor = node.getReference.toString
-    val nt =
-      if (anchor.head != '#') NodeType.Url(anchor)
-      else NodeType.Jump(anchor.tail)
-    List(Node(nt))
+    if (node.getText == BasedSequence.EMPTY) {
+      val tags = TagParser.parse(anchor)
+      TextUtil.appendText(
+        TextUtil.prependText(tags.map(Node(_, List())), "["),
+        "]")
+    }
+    else if (anchor.head != '#') List(Node(NodeType.Url(anchor)))
+    else List(Node(NodeType.Jump(anchor.tail)))
   }
 
   def visit(node: Footnote): List[Node[_]] =
@@ -108,7 +114,7 @@ class Reader(treeBase: NodeType.TreeBase) {
     List(Node(NodeType.ListItem, paragraphChildren(node)))
 
   def visit(node: ast.OrderedList): List[Node[_]] =
-    List(Node(NodeType.OrderedList, children(node)))
+    List(Node(NodeType.OrderedList(node.getStartNumber), children(node)))
 
   def visit(node: ast.OrderedListItem): List[Node[_]] =
     List(Node(NodeType.ListItem, paragraphChildren(node)))
@@ -121,6 +127,9 @@ class Reader(treeBase: NodeType.TreeBase) {
 
   def visit(node: ast.SoftLineBreak): List[Node[_]] =
     List(Node(NodeType.Text("\n")))
+
+  def visit(node: ast.HardLineBreak): List[Node[_]] =
+    List(Node(NodeType.HardLineBreak))
 
   def dispatch(node: util.ast.Node): List[Node[_]] =
     node match {
@@ -139,6 +148,7 @@ class Reader(treeBase: NodeType.TreeBase) {
       case n: ast.Heading => visit(n)
       case n: ast.BlockQuote => visit(n)
       case n: ast.SoftLineBreak => visit(n)
+      case n: ast.HardLineBreak => visit(n)
       case n: ast.IndentedCodeBlock => visit(n)
       case n: ast.FencedCodeBlock => visit(n)
       case n: TableBlock => visit(n)
