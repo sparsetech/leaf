@@ -42,12 +42,6 @@ class ReaderSpec extends FunSuite {
           Node(NodeType.Text("Google"))))))))
   }
 
-  test("Link without title") {
-    assert(Reader.parse("[http://google.com/]") == List(
-      Node(NodeType.Paragraph, List(
-        Node(NodeType.Url("http://google.com/"))))))
-  }
-
   test("Jump") {
     assert(Reader.parse("[Section](#section)") == List(
       Node(NodeType.Paragraph, List(
@@ -55,10 +49,20 @@ class ReaderSpec extends FunSuite {
           Node(NodeType.Text("Section"), List.empty)))))))
   }
 
-  test("Jump without title") {
-    assert(Reader.parse("[#section]") == List(
+  test("Links or jumps without title") {
+    // Do not parse links without title since words could not be placed within
+    // square brackets otherwise
+    assert(Reader.parse("[http://google.com/]") ==
+       List(Node(NodeType.Paragraph, List(
+         Node(NodeType.Text("[http://google.com/]"), List())))))
+
+    assert(Reader.parse("[#section]") ==
+      List(Node(NodeType.Paragraph, List(
+        Node(NodeType.Text("[#section]"))))))
+
+    assert(Reader.parse("[test]") == List(
       Node(NodeType.Paragraph, List(
-        Node(NodeType.Jump("section"))))))
+        Node(NodeType.Text("[test]"), List())))))
   }
 
   test("Convert self-closing HTML tags") {
@@ -167,7 +171,18 @@ class ReaderSpec extends FunSuite {
         |1. Item 1
         |2. Item 2
       """.stripMargin) == List(
-      Node(NodeType.OrderedList, List(
+      Node(NodeType.OrderedList(1), List(
+        Node(NodeType.ListItem, List(Node(NodeType.Text("Item 1")))),
+        Node(NodeType.ListItem, List(Node(NodeType.Text("Item 2"))))))))
+  }
+
+  test("Ordered list with custom start number") {
+    assert(Reader.parse(
+      """
+        |5. Item 1
+        |7. Item 2
+        """.stripMargin) == List(
+      Node(NodeType.OrderedList(5), List(
         Node(NodeType.ListItem, List(Node(NodeType.Text("Item 1")))),
         Node(NodeType.ListItem, List(Node(NodeType.Text("Item 2"))))))))
   }
@@ -339,5 +354,81 @@ class ReaderSpec extends FunSuite {
         Node(NodeType.Text("Second"))
       ))
     ))
+  }
+
+  test("Nested brackets") {
+    assert(Reader.parse(
+      """[He] [bought [a shirt [with sleeves]]]""") == List(
+      Node(NodeType.Paragraph, List(
+        Node(NodeType.Text("[He]")),
+        Node(NodeType.Text(" [bought [a shirt ")),
+        Node(NodeType.Text("[with sleeves]")),
+        Node(NodeType.Text("]]"))))))
+  }
+
+  test("Brackets followed by HTML") {
+    assert(Reader.parse(
+    """I would like to book [for two nights]<tag>Duration</tag>""") == List(
+      Node(NodeType.Paragraph, List(
+        Node(NodeType.Text("I would like to book ")),
+        Node(NodeType.Text("[for two nights]")),
+        Node(NodeType.Html("tag", Map()), List(Node(NodeType.Text("Duration"), List())))))))
+  }
+
+  test("References in brackets") {
+    assert(Reader.parse(
+      """morphology [@haspelmath2009, p. 2]""") == List(
+      Node(NodeType.Paragraph, List(Node(NodeType.Text("morphology "), List()),
+        Node(NodeType.Text("[@haspelmath2009, p. 2]"), List())))))
+  }
+
+  test("HTML in brackets") {
+    assert(Reader.parse(
+      """[Ca<sup>2+</sup>]""") == List(
+      Node(NodeType.Paragraph, List(
+        Node(NodeType.Text("[Ca"),List()),
+        Node(NodeType.Html("sup", Map()), List(Node(NodeType.Text("2+"), List()))),
+        Node(NodeType.Text("]"), List())))))
+  }
+
+  test("Nested HTML tags") {
+    assert(Reader.parse(
+      """a<sub><span style="font-variant:small-caps">b</span></sub>""") ==
+        List(Node(NodeType.Paragraph, List(
+          Node(NodeType.Text("a"), List()),
+          Node(NodeType.Html("sub", Map()), List(
+            Node(NodeType.Html("span", Map("style" -> "font-variant:small-caps")), List(
+              Node(NodeType.Text("b"), List())))))))))
+  }
+
+  test("Hard line break in list items") {
+    // A trailing slash at the end of a list item creates a hard line break
+    assert(Reader.parse("- A" + '\\' + "\n  B") == List(
+      Node(NodeType.BulletList,
+        List(Node(NodeType.ListItem, List(
+          Node(NodeType.Text("A"), List()),
+          Node(NodeType.HardLineBreak, List()),
+          Node(NodeType.Text("B"), List())))))))
+  }
+
+  test("List with custom start index") {
+    assert(Reader.parse(
+      """1. A
+        |2. B
+        |3. C
+        |
+        |Text
+        |
+        |4. D
+        |""".stripMargin
+    ) == List(
+      Node(NodeType.OrderedList(1), List(
+        Node(NodeType.ListItem, List(Node(NodeType.Text("A"),List()))),
+        Node(NodeType.ListItem, List(Node(NodeType.Text("B"),List()))),
+        Node(NodeType.ListItem, List(Node(NodeType.Text("C"),List()))))
+      ),
+      Node(NodeType.Paragraph, List(Node(NodeType.Text("Text"), List()))),
+      Node(NodeType.OrderedList(4), List(Node(NodeType.ListItem, List(
+        Node(NodeType.Text("D"), List())))))))
   }
 }

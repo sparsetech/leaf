@@ -12,12 +12,12 @@ class WriterSpec extends FunSuite {
   }
 
   test("Generate ordered list") {
-    val list = Node(NodeType.OrderedList, List(
+    val list = Node(NodeType.OrderedList(1), List(
       Node(NodeType.ListItem, List(Node(NodeType.Text("Item 1")))),
       Node(NodeType.ListItem, List(Node(NodeType.Text("Item 2"))))))
 
     assert(html.Writer.node(list) == List(
-      pine.tag.Ol.set(List(
+      pine.tag.Ol.start("1").set(List(
         pine.tag.Li.set("Item 1"),
         pine.tag.Li.set("Item 2")))))
   }
@@ -77,13 +77,14 @@ class WriterSpec extends FunSuite {
   test("Generate HTML tag with children") {
     val div =
       Node(NodeType.Html("div", Map("id" -> "test")), List(
-        Node(NodeType.OrderedList, List(
+        Node(NodeType.OrderedList(1), List(
           Node(NodeType.ListItem, List(Node(NodeType.Text("Item 1")))),
           Node(NodeType.ListItem, List(Node(NodeType.Text("Item 2"))))))))
 
     assert(html.Writer.node(div) == List(
       pine.tag.Div.id("test").set(
-        pine.tag.Ol.set(List(
+        // TODO Ol.start should be integer
+        pine.tag.Ol.start("1").set(List(
           pine.tag.Li.set("Item 1"),
           pine.tag.Li.set("Item 2"))))))
   }
