@@ -25,7 +25,6 @@ object NodeType {
   case object SmallCaps   extends NodeType
   case object Bold        extends NodeType
   case object Italic      extends NodeType
-  case object Anchor      extends NodeType
   case object Todo        extends NodeType
   case object Code        extends NodeType
 
@@ -37,6 +36,7 @@ object NodeType {
 
   case class Image(url: String) extends NodeType
 
+  case class Anchor(id: String  ) extends NodeType
   case class Jump(target: String) extends NodeType
 
   case object BulletList extends NodeType
