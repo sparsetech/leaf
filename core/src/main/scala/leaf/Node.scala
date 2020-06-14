@@ -36,8 +36,9 @@ object NodeType {
 
   case class Image(url: String) extends NodeType
 
-  case class Anchor(id: String  ) extends NodeType
-  case class Jump(target: String) extends NodeType
+  case class Anchor(id    : String) extends NodeType
+  case class Group (id    : String) extends NodeType
+  case class Jump  (target: String) extends NodeType
 
   case object BulletList extends NodeType
   case class OrderedList(start: Int) extends NodeType

@@ -194,7 +194,7 @@ class Reader(treeBase: NodeType.TreeBase) {
               (List(Node(nt, children)) ++ children2, remainder2)
 
             case NodeType.CloseTag(t) if !tag.contains(t) =>
-              throw new Exception(s"Closing wrong tag ($tag expected, $t given)")
+              throw new Exception(s"Closing wrong tag ($tag expected, $t given) in $nodes")
 
             case NodeType.CloseTag(_) => (List.empty, xs)
 
