@@ -7,9 +7,10 @@ object Writer extends Writer
 
 trait Writer {
   def children(n: LNode[_]): List[pine.Node] = n.children.flatMap(node)
-  def children[T <: NodeType]
-              (n: LNode[_],
-               f: LNode[T] => List[pine.Node]): List[pine.Node] =
+  def children[T <: NodeType](
+    n: LNode[_],
+    f: LNode[T] => List[pine.Node]
+  ): List[pine.Node] =
     n.children.flatMap(child => f(child.asInstanceOf[LNode[T]]))
 
   def getIdFromChildren(nodes: List[LNode[_]]): Option[String] =
@@ -81,7 +82,9 @@ trait Writer {
   }
 
   val smallCaps = { smallCaps: LNode[NodeType.SmallCaps.type] =>
-    List(html"""<span style="font-variant:small-caps">${children(smallCaps)}</span>""")
+    List(html"""<span style="font-variant:small-caps">${children(
+      smallCaps
+    )}</span>""")
   }
 
   val bold = { bold: LNode[NodeType.Bold.type] =>
@@ -97,19 +100,27 @@ trait Writer {
   }
 
   val subsubsection = { subsubsection: LNode[NodeType.Subsubsection.type] =>
-    List(html"<h4 id=${getIdFromChildren(subsubsection.children)}>${children(subsubsection)}</h4>")
+    List(
+      html"<h4 id=${getIdFromChildren(subsubsection.children)}>${children(subsubsection)}</h4>"
+    )
   }
 
   val subsection = { subsection: LNode[NodeType.Subsection.type] =>
-    List(html"<h3 id=${getIdFromChildren(subsection.children)}>${children(subsection)}</h3>")
+    List(
+      html"<h3 id=${getIdFromChildren(subsection.children)}>${children(subsection)}</h3>"
+    )
   }
 
   val section = { section: LNode[NodeType.Section.type] =>
-    List(html"<h2 id=${getIdFromChildren(section.children)}>${children(section)}</h2>")
+    List(
+      html"<h2 id=${getIdFromChildren(section.children)}>${children(section)}</h2>"
+    )
   }
 
   val chapter = { chapter: LNode[NodeType.Chapter.type] =>
-    List(html"<h1 id=${getIdFromChildren(chapter.children)}>${children(chapter)}</h1>")
+    List(
+      html"<h1 id=${getIdFromChildren(chapter.children)}>${children(chapter)}</h1>"
+    )
   }
 
   val listItem = { listItem: LNode[NodeType.ListItem.type] =>
@@ -127,11 +138,13 @@ trait Writer {
   val listing = { listing: LNode[NodeType.Listing] =>
     val lng = listing.tpe.language.getOrElse("")
     val cls = s"sourceCode $lng"
-    val code = html"<pre class=$cls><code data-lang=$lng>${listing.tpe.code.getOrElse("")}</code></pre>"
+    val code =
+      html"<pre class=$cls><code data-lang=$lng>${listing.tpe.code.getOrElse("")}</code></pre>"
     val result = listing.tpe.result.map { result =>
       List(
         html"<b>Output:</b>",
-        html"""<pre class="sourceCode"><code>$result</code></pre>""")
+        html"""<pre class="sourceCode"><code>$result</code></pre>"""
+      )
     }
 
     code +: result.getOrElse(List.empty)
@@ -162,7 +175,7 @@ trait Writer {
   }
 
   val footnote = { fn: LNode[NodeType.Footnote] =>
-    val id     = fn.tpe.target  // TODO Check for valid characters
+    val id     = fn.tpe.target // TODO Check for valid characters
     val refId  = s"fnref$id"
     val target = s"#fn$id"
     List(html"""<a href=$target id=$refId class="footnote">[$id]</a>""")
@@ -187,50 +200,76 @@ trait Writer {
   }
 
   def node(node: LNode[_]): List[Node] = node.tpe match {
-    case _: NodeType.Id => id(node.asInstanceOf[LNode[NodeType.Id]])
+    case _: NodeType.Id   => id(node.asInstanceOf[LNode[NodeType.Id]])
     case _: NodeType.Html => html(node.asInstanceOf[LNode[NodeType.Html]])
-    case NodeType.Table => table(node.asInstanceOf[LNode[NodeType.Table.type]])
-    case NodeType.TableHead => tableHead(node.asInstanceOf[LNode[NodeType.TableHead.type]])
-    case NodeType.TableBody => tableBody(node.asInstanceOf[LNode[NodeType.TableBody.type]])
-    case NodeType.TableRow => tableRow(node.asInstanceOf[LNode[NodeType.TableRow.type]])
-    case NodeType.TableCell => tableCell(node.asInstanceOf[LNode[NodeType.TableCell.type]])
-    case NodeType.TableCaption => tableCaption(node.asInstanceOf[LNode[NodeType.TableCaption.type]])
+    case NodeType.Table   => table(node.asInstanceOf[LNode[NodeType.Table.type]])
+    case NodeType.TableHead =>
+      tableHead(node.asInstanceOf[LNode[NodeType.TableHead.type]])
+    case NodeType.TableBody =>
+      tableBody(node.asInstanceOf[LNode[NodeType.TableBody.type]])
+    case NodeType.TableRow =>
+      tableRow(node.asInstanceOf[LNode[NodeType.TableRow.type]])
+    case NodeType.TableCell =>
+      tableCell(node.asInstanceOf[LNode[NodeType.TableCell.type]])
+    case NodeType.TableCaption =>
+      tableCaption(node.asInstanceOf[LNode[NodeType.TableCaption.type]])
     case _: NodeType.Anchor => anchor(node.asInstanceOf[LNode[NodeType.Anchor]])
-    case _: NodeType.Group => group(node.asInstanceOf[LNode[NodeType.Group]])
-    case _: NodeType.Jump => jump(node.asInstanceOf[LNode[NodeType.Jump]])
-    case NodeType.HardLineBreak => hardLineBreak(node.asInstanceOf[LNode[NodeType.HardLineBreak.type]])
-    case NodeType.Subscript => subscript(node.asInstanceOf[LNode[NodeType.Subscript.type]])
-    case NodeType.Superscript => superscript(node.asInstanceOf[LNode[NodeType.Superscript.type]])
-    case NodeType.SmallCaps => smallCaps(node.asInstanceOf[LNode[NodeType.SmallCaps.type]])
+    case _: NodeType.Group  => group(node.asInstanceOf[LNode[NodeType.Group]])
+    case _: NodeType.Jump   => jump(node.asInstanceOf[LNode[NodeType.Jump]])
+    case NodeType.HardLineBreak =>
+      hardLineBreak(node.asInstanceOf[LNode[NodeType.HardLineBreak.type]])
+    case NodeType.Subscript =>
+      subscript(node.asInstanceOf[LNode[NodeType.Subscript.type]])
+    case NodeType.Superscript =>
+      superscript(node.asInstanceOf[LNode[NodeType.Superscript.type]])
+    case NodeType.SmallCaps =>
+      smallCaps(node.asInstanceOf[LNode[NodeType.SmallCaps.type]])
     case NodeType.Bold => bold(node.asInstanceOf[LNode[NodeType.Bold.type]])
-    case NodeType.Italic => italic(node.asInstanceOf[LNode[NodeType.Italic.type]])
+    case NodeType.Italic =>
+      italic(node.asInstanceOf[LNode[NodeType.Italic.type]])
     case NodeType.Code => code(node.asInstanceOf[LNode[NodeType.Code.type]])
-    case NodeType.Subsubsection => subsubsection(node.asInstanceOf[LNode[NodeType.Subsubsection.type]])
-    case NodeType.Subsection => subsection(node.asInstanceOf[LNode[NodeType.Subsection.type]])
-    case NodeType.Section => section(node.asInstanceOf[LNode[NodeType.Section.type]])
-    case NodeType.Chapter => chapter(node.asInstanceOf[LNode[NodeType.Chapter.type]])
-    case NodeType.ListItem => listItem(node.asInstanceOf[LNode[NodeType.ListItem.type]])
-    case NodeType.BulletList => bulletList(node.asInstanceOf[LNode[NodeType.BulletList.type]])
-    case _: NodeType.OrderedList => orderedList(node.asInstanceOf[LNode[NodeType.OrderedList]])
-    case _: NodeType.Listing => listing(node.asInstanceOf[LNode[NodeType.Listing]])
-    case NodeType.Todo => todo(node.asInstanceOf[LNode[NodeType.Todo.type]])
-    case _: NodeType.Url => url(node.asInstanceOf[LNode[NodeType.Url]])
+    case NodeType.Subsubsection =>
+      subsubsection(node.asInstanceOf[LNode[NodeType.Subsubsection.type]])
+    case NodeType.Subsection =>
+      subsection(node.asInstanceOf[LNode[NodeType.Subsection.type]])
+    case NodeType.Section =>
+      section(node.asInstanceOf[LNode[NodeType.Section.type]])
+    case NodeType.Chapter =>
+      chapter(node.asInstanceOf[LNode[NodeType.Chapter.type]])
+    case NodeType.ListItem =>
+      listItem(node.asInstanceOf[LNode[NodeType.ListItem.type]])
+    case NodeType.BulletList =>
+      bulletList(node.asInstanceOf[LNode[NodeType.BulletList.type]])
+    case _: NodeType.OrderedList =>
+      orderedList(node.asInstanceOf[LNode[NodeType.OrderedList]])
+    case _: NodeType.Listing =>
+      listing(node.asInstanceOf[LNode[NodeType.Listing]])
+    case NodeType.Todo     => todo(node.asInstanceOf[LNode[NodeType.Todo.type]])
+    case _: NodeType.Url   => url(node.asInstanceOf[LNode[NodeType.Url]])
     case _: NodeType.Image => image(node.asInstanceOf[LNode[NodeType.Image]])
-    case NodeType.Paragraph => paragraph(node.asInstanceOf[LNode[NodeType.Paragraph.type]])
-    case NodeType.Quote => quote(node.asInstanceOf[LNode[NodeType.Quote.type]])
+    case NodeType.Paragraph =>
+      paragraph(node.asInstanceOf[LNode[NodeType.Paragraph.type]])
+    case NodeType.Quote   => quote(node.asInstanceOf[LNode[NodeType.Quote.type]])
     case _: NodeType.Text => text(node.asInstanceOf[LNode[NodeType.Text]])
-    case _: NodeType.Footnote => footnote(node.asInstanceOf[LNode[NodeType.Footnote]])
-    case NodeType.FootnoteBlock => footnoteBlock(node.asInstanceOf[LNode[NodeType.FootnoteBlock.type]])
-    case _: NodeType.FootnoteBlockItem => footnoteBlockItem(node.asInstanceOf[LNode[NodeType.FootnoteBlockItem]])
+    case _: NodeType.Footnote =>
+      footnote(node.asInstanceOf[LNode[NodeType.Footnote]])
+    case NodeType.FootnoteBlock =>
+      footnoteBlock(node.asInstanceOf[LNode[NodeType.FootnoteBlock.type]])
+    case _: NodeType.FootnoteBlockItem =>
+      footnoteBlockItem(node.asInstanceOf[LNode[NodeType.FootnoteBlockItem]])
   }
 
-  def tableOfContents(references: List[Structure],
-                      maxDepth: Int): Option[pine.Node] = {
+  def tableOfContents(
+    references: List[Structure],
+    maxDepth: Int
+  ): Option[pine.Node] = {
     def iterate(reference: Structure, depth: Int): Option[pine.Node] =
       if (depth >= maxDepth) None
       else {
-        val caption = reference.caption.flatMap(n => leaf.html.Writer
-          .node(n.asInstanceOf[leaf.Node[NodeType]]))
+        val caption = reference.caption.flatMap(n =>
+          leaf.html.Writer
+            .node(n.asInstanceOf[leaf.Node[NodeType]])
+        )
 
         val children = reference.children
           .flatMap(iterate(_, depth + 1))

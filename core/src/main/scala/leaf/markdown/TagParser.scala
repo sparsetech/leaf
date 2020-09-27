@@ -14,7 +14,9 @@ object TagParser {
   val arguments  = P(argument.rep(sep = whitespaces))
 
   val openTag: Parser[List[Tag]] =
-    P("<" ~ identifier ~ whitespaces.? ~ arguments ~ whitespaces.? ~ "/".!.? ~ ">")
+    P(
+      "<" ~ identifier ~ whitespaces.? ~ arguments ~ whitespaces.? ~ "/".!.? ~ ">"
+    )
       .map { case (name, attrs, close) =>
         val tag = OpenTag(name, attrs.toMap)
         if (close.isEmpty) List(tag) else List(tag, CloseTag(name))
@@ -27,7 +29,7 @@ object TagParser {
     .map(t => Text(pine.HtmlHelpers.decodeText(t, xml = false)))
 
   val tag: Parser[List[Tag]] = P(openTag | (closeTag | text).map(List(_)))
-  val tags = P(whitespaces.? ~ tag.rep(min = 1) ~ End).map(_.toList.flatten)
+  val tags                   = P(whitespaces.? ~ tag.rep(min = 1) ~ End).map(_.toList.flatten)
 
   def parse(input: String): List[Tag] = tags.parse(input).get.value
 }

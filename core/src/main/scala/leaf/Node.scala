@@ -16,7 +16,7 @@ object NodeType {
   case object Subsubsection extends ChildLevel
 
   case class Text(text: String) extends NodeType with Tag
-  case class Id  (id  : String) extends NodeType
+  case class Id(id: String)     extends NodeType
 
   case object HardLineBreak extends NodeType
 
@@ -30,19 +30,19 @@ object NodeType {
 
   case class Url(href: String) extends NodeType
 
-  case class  Footnote         (target: String) extends NodeType
-  case object FootnoteBlock                     extends NodeType
-  case class  FootnoteBlockItem(id: String    ) extends NodeType
+  case class Footnote(target: String)      extends NodeType
+  case object FootnoteBlock                extends NodeType
+  case class FootnoteBlockItem(id: String) extends NodeType
 
   case class Image(url: String) extends NodeType
 
-  case class Anchor(id    : String) extends NodeType
-  case class Group (id    : String) extends NodeType
-  case class Jump  (target: String) extends NodeType
+  case class Anchor(id: String)   extends NodeType
+  case class Group(id: String)    extends NodeType
+  case class Jump(target: String) extends NodeType
 
-  case object BulletList extends NodeType
+  case object BulletList             extends NodeType
   case class OrderedList(start: Int) extends NodeType
-  case object ListItem    extends NodeType
+  case object ListItem               extends NodeType
 
   case object Table        extends NodeType
   case object TableHead    extends NodeType
@@ -54,17 +54,18 @@ object NodeType {
   case object Paragraph extends NodeType
   case object Quote     extends NodeType
 
-  sealed trait Tag extends NodeType
-  case class OpenTag (tag: String, attributes: Map[String, String]) extends Tag
-  case class CloseTag(tag: String) extends Tag
+  sealed trait Tag                                                 extends NodeType
+  case class OpenTag(tag: String, attributes: Map[String, String]) extends Tag
+  case class CloseTag(tag: String)                                 extends Tag
 
   case class Html(tag: String, attributes: Map[String, String]) extends NodeType
 
-  case class Listing(id      : Option[String] = None,
-                     language: Option[String] = None,
-                     code    : Option[String] = None,
-                     result  : Option[String] = None
-                    ) extends NodeType
+  case class Listing(
+    id: Option[String] = None,
+    language: Option[String] = None,
+    code: Option[String] = None,
+    result: Option[String] = None
+  ) extends NodeType
 }
 
 case class Node[T <: NodeType](tpe: T, children: List[Node[_]] = List.empty) {
