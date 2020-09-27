@@ -1,6 +1,6 @@
 val Pine       = "0.1.5"
 val Circe      = "0.11.1"
-val FlexMark   = "0.50.18"
+val FlexMark   = "0.50.32"
 val FastParse  = "1.0.1"
 val ScalaTest  = "3.0.8"
 val SourceCode = "0.1.7"

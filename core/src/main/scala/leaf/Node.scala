@@ -18,11 +18,15 @@ object NodeType {
   case class Text(text: String) extends NodeType with Tag
   case class Id  (id  : String) extends NodeType
 
-  case object Bold    extends NodeType
-  case object Italic  extends NodeType
-  case object Anchor  extends NodeType
-  case object Todo    extends NodeType
-  case object Code    extends NodeType
+  case object HardLineBreak extends NodeType
+
+  case object Subscript   extends NodeType
+  case object Superscript extends NodeType
+  case object SmallCaps   extends NodeType
+  case object Bold        extends NodeType
+  case object Italic      extends NodeType
+  case object Todo        extends NodeType
+  case object Code        extends NodeType
 
   case class Url(href: String) extends NodeType
 
@@ -32,10 +36,12 @@ object NodeType {
 
   case class Image(url: String) extends NodeType
 
-  case class Jump(target: String) extends NodeType
+  case class Anchor(id    : String) extends NodeType
+  case class Group (id    : String) extends NodeType
+  case class Jump  (target: String) extends NodeType
 
-  case object BulletList  extends NodeType
-  case object OrderedList extends NodeType
+  case object BulletList extends NodeType
+  case class OrderedList(start: Int) extends NodeType
   case object ListItem    extends NodeType
 
   case object Table        extends NodeType
