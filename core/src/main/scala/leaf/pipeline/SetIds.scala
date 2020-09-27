@@ -8,7 +8,7 @@ object SetIds {
 
     text.map {
       case c if c.isLetterOrDigit => c
-      case _ => '-'
+      case _                      => '-'
     }.toLowerCase
   }
 
@@ -17,8 +17,10 @@ object SetIds {
     node.tpe match {
       case _: NodeType.ChildLevel =>
         if (node.children.exists(_.tpe.isInstanceOf[NodeType.Id])) node
-        else node.copy(
-          children = node.children :+ Node(NodeType.Id(generateId(node))))
+        else
+          node.copy(
+            children = node.children :+ Node(NodeType.Id(generateId(node)))
+          )
       case _ => node
     }
 }

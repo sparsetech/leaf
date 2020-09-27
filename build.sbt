@@ -8,16 +8,15 @@ val SourceCode = "0.1.7"
 name := "leaf"
 
 lazy val commonSettings = Seq(
-  organization      := "tech.sparse",
-  scalaVersion      := "2.12.4-bin-typelevel-4",
+  organization := "tech.sparse",
+  scalaVersion := "2.12.4-bin-typelevel-4",
   scalaOrganization := "org.typelevel",
-  scalacOptions     += "-Yliteral-types",
+  scalacOptions += "-Yliteral-types",
   libraryDependencies ++= Seq(
     "io.circe" %% "circe-core"    % Circe,
     "io.circe" %% "circe-generic" % Circe,
     "io.circe" %% "circe-parser"  % Circe
   ),
-
   pomExtra :=
     <url>https://github.com/sparsetech/leaf</url>
     <licenses>
@@ -38,7 +37,8 @@ lazy val commonSettings = Seq(
     </developers>
 )
 
-lazy val root = project.in(file("."))
+lazy val root = project
+  .in(file("."))
   .aggregate(core, notebook)
   .settings(
     commonSettings,
@@ -52,12 +52,12 @@ lazy val core = project
     commonSettings,
     name := "leaf-core",
     libraryDependencies ++= Seq(
-      "tech.sparse"            %% "pine"                   % Pine,
-      "org.scalameta"          %% "fastparse"              % FastParse,
-      "com.vladsch.flexmark"   %  "flexmark"               % FlexMark,
-      "com.vladsch.flexmark"   %  "flexmark-ext-tables"    % FlexMark,
-      "com.vladsch.flexmark"   %  "flexmark-ext-footnotes" % FlexMark,
-      "org.scalatest"          %% "scalatest"              % ScalaTest % "test"
+      "tech.sparse"         %% "pine"                   % Pine,
+      "org.scalameta"       %% "fastparse"              % FastParse,
+      "com.vladsch.flexmark" % "flexmark"               % FlexMark,
+      "com.vladsch.flexmark" % "flexmark-ext-tables"    % FlexMark,
+      "com.vladsch.flexmark" % "flexmark-ext-footnotes" % FlexMark,
+      "org.scalatest"       %% "scalatest"              % ScalaTest % "test"
     )
   )
 
