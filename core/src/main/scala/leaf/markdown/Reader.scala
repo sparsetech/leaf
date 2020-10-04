@@ -11,6 +11,7 @@ import com.vladsch.flexmark.ext.footnotes.{
 import com.vladsch.flexmark.ext.tables._
 import com.vladsch.flexmark.parser.Parser
 import com.vladsch.flexmark.util.data.MutableDataSet
+import com.vladsch.flexmark.util.misc.Extension
 import com.vladsch.flexmark.util.sequence.BasedSequence
 import leaf._
 import leaf.notebook.TextHelpers
@@ -254,8 +255,10 @@ class Reader(treeBase: NodeType.TreeBase) {
     val options = new MutableDataSet()
       .set(
         Parser.EXTENSIONS,
-        java.util.Arrays
-          .asList(TablesExtension.create, FootnoteExtension.create)
+        java.util.Arrays.asList(
+          TablesExtension.create(),
+          FootnoteExtension.create()
+        ): java.util.Collection[Extension]
       )
     val parser   = Parser.builder(options).build
     val document = parser.parse(input)

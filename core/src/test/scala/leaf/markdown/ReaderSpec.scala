@@ -1,9 +1,9 @@
 package leaf.markdown
 
 import leaf.{Node, NodeType}
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class ReaderSpec extends FunSuite {
+class ReaderSpec extends AnyFunSuite {
   test("Bold") {
     assert(
       Reader.parse("**Hello**") == List(

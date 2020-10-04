@@ -1,8 +1,8 @@
 package leaf
 
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class WriterSpec extends FunSuite {
+class WriterSpec extends AnyFunSuite {
   test("Generate link") {
     val url = Node(
       NodeType.Url("http://google.com/"),
@@ -27,7 +27,7 @@ class WriterSpec extends FunSuite {
     assert(
       html.Writer.node(list) == List(
         pine.tag.Ol
-          .start("1")
+          .start(1)
           .set(List(pine.tag.Li.set("Item 1"), pine.tag.Li.set("Item 2")))
       )
     )
@@ -134,9 +134,8 @@ class WriterSpec extends FunSuite {
         pine.tag.Div
           .id("test")
           .set(
-            // TODO Ol.start should be integer
             pine.tag.Ol
-              .start("1")
+              .start(1)
               .set(List(pine.tag.Li.set("Item 1"), pine.tag.Li.set("Item 2")))
           )
       )

@@ -1,8 +1,8 @@
 package leaf
 
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class StructureSpec extends FunSuite {
+class StructureSpec extends AnyFunSuite {
   test("tree() (1)") {
     val structure = Structure.tree(
       NodeType.Chapter,
