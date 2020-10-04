@@ -1,5 +1,5 @@
 # Leaf
-[![Build Status](https://travis-ci.org/sparsetech/leaf.svg)](https://travis-ci.org/sparsetech/leaf)
+[![Build Status](https://travis-ci.org/sparsetech/leaf.svg?branch=master)](https://travis-ci.org/sparsetech/leaf)
 [![Join the chat at https://gitter.im/sparsetech/leaf](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/sparsetech/leaf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Maven Central](https://img.shields.io/maven-central/v/tech.sparse/leaf-core_2.12.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22tech.sparse%22%20AND%20a%3A%22leaf-core_2.12%22)
 

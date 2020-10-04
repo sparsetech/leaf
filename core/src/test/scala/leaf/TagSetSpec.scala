@@ -1,8 +1,8 @@
 package leaf
 
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class TagSetSpec extends FunSuite {
+class TagSetSpec extends AnyFunSuite {
   test("Code") {
     assert(
       TagSet

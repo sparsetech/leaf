@@ -1,10 +1,10 @@
 package leaf.pipeline
 
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
 import leaf._
 
-class SetIdsSpec extends FunSuite {
+class SetIdsSpec extends AnyFunSuite {
   test("Set IDs") {
     val nodes = List(
       Node(NodeType.Section, List(Node(NodeType.Text("Section 1")))),

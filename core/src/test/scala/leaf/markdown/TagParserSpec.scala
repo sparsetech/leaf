@@ -4,9 +4,9 @@ import scala.meta.internal.fastparse.core.Parsed
 import leaf.NodeType
 
 import scala.util.{Failure, Success, Try}
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class TagParserSpec extends FunSuite {
+class TagParserSpec extends AnyFunSuite {
   def parse(input: String): Try[List[NodeType.Tag]] =
     TagParser.tags.parse(input) match {
       case Parsed.Success(value, _)        => Success(value)

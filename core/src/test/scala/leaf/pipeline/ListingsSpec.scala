@@ -2,9 +2,9 @@ package leaf.pipeline
 
 import leaf.notebook.ListingResult
 import leaf.{Node, NodeType}
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class ListingsSpec extends FunSuite {
+class ListingsSpec extends AnyFunSuite {
   test("embed()") {
     val result = Listings.embed(
       Node(NodeType.Listing(id = Some("print"))),
